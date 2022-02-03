@@ -88,11 +88,11 @@ class Player {
 }
 const player = new Player();
 
-// Enemy
-const bubblesArray = [];
-const bubble = new Image();
-bubble.src = 'images/clown-fish.png';
-class Bubble {
+// Fish1
+const fishArray1 = [];
+const fish1 = new Image();
+fish1.src = 'images/clown-fish.png';
+class Fish1 {
     constructor(){
         this.x = 0 - 50 - Math.random() * canvas.width/2;
         this.y = Math.random() * canvas.height;
@@ -115,50 +115,169 @@ class Bubble {
         this.distance = Math.sqrt(dx * dx + dy * dy);
     }
     draw(){
-      /*
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        */
-        ctx.drawImage(bubble, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+        ctx.drawImage(fish1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
     }
 }
 
-function handleBubbles(){
-    for (let i = 0; i < bubblesArray.length; i++){
-        if (bubblesArray[i].y > canvas.height * 2){
-            bubblesArray.splice(i, 1);
+function handleFish1(){
+    for (let i = 0; i < fishArray1.length; i++){
+        if (fishArray1[i].y > canvas.height * 2){
+            fishArray1.splice(i, 1);
         }
     }
-    for (let i = 0; i < bubblesArray.length; i++){
-        if (bubblesArray[i].distance < bubblesArray[i].radius + player.radius){
-            popAndRemove(i);
+    for (let i = 0; i < fishArray1.length; i++){
+        if (fishArray1[i].distance < fishArray1[i].radius + player.radius){
+            popAndRemove1(i);
         }
     }
-    for (let i = 0; i < bubblesArray.length; i++){
-        bubblesArray[i].update();
-        bubblesArray[i].draw();
+    for (let i = 0; i < fishArray1.length; i++){
+        fishArray1[i].update();
+        fishArray1[i].draw();
     }
     if (gameFrame % 100 == 0) {
-        bubblesArray.push(new Bubble());
+        fishArray1.push(new Fish1());
 
     }
 }
-function popAndRemove(i){
-    if (bubblesArray[i]) {
-        if (!bubblesArray[i].counted) score++;
-        bubblesArray[i].counted = true;
-        bubblesArray[i].frameX++;
-        if (bubblesArray[i].frameX > 7) bubblesArray[i].pop = true;
-        if (bubblesArray[i].pop) bubblesArray.splice(i, 1);
-        requestAnimationFrame(popAndRemove);
+function popAndRemove1(i){
+    if (fishArray1[i]) {
+        if (!fishArray1[i].counted) score++;
+        fishArray1[i].counted = true;
+        fishArray1[i].frameX++;
+        if (fishArray1[i].frameX > 7) fishArray1[i].pop = true;
+        if (fishArray1[i].pop) fishArray1.splice(i, 1);
+        requestAnimationFrame(popAndRemove1);
     }
 
 }
 
-/**** BUBBLE TEXT ***/ 
+// Fish 2
+const fishArray2 = [];
+const fish2 = new Image();
+fish2.src = 'images/blue-tang.png';
+class Fish2 {
+    constructor(){
+        this.x = 0 - 50 - Math.random() * canvas.width/2;
+        this.y = Math.random() * canvas.height;
+        
+        this.radius = 50;
+        this.speed = Math.random() * 5 + 1;
+        this.distance;
+        this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
+        this.counted = false;
+        this.frameX = 0;
+        this.spriteWidth = 100;
+        this.spriteHeight = 100;
+        this.pop = false;
+        this.counted = false;
+    }
+    update(){
+        this.x += this.speed
+        const dy = this.y - player.y;
+        const dx = this.x - player.x;
+        this.distance = Math.sqrt(dx * dx + dy * dy);
+    }
+    draw(){
+        ctx.drawImage(fish2, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+    }
+}
+
+function handleFish2(){
+    for (let i = 0; i < fishArray2.length; i++){
+        if (fishArray2[i].y > canvas.height * 2){
+            fishArray2.splice(i, 1);
+        }
+    }
+    for (let i = 0; i < fishArray2.length; i++){
+        if (fishArray2[i].distance < fishArray2[i].radius + player.radius){
+            popAndRemove2(i);
+        }
+    }
+    for (let i = 0; i < fishArray2.length; i++){
+        fishArray2[i].update();
+        fishArray2[i].draw();
+    }
+    if (gameFrame % 100 == 0) {
+        fishArray2.push(new Fish2());
+
+    }
+}
+function popAndRemove2(i){
+    if (fishArray2[i]) {
+        if (!fishArray2[i].counted) score++;
+        fishArray2[i].counted = true;
+        fishArray2[i].frameX++;
+        if (fishArray2[i].frameX > 7) fishArray2[i].pop = true;
+        if (fishArray2[i].pop) fishArray2.splice(i, 1);
+        requestAnimationFrame(popAndRemove2);
+    }
+
+}
+
+// Enemies
+const enemyImage = new Image();
+enemyImage.src = 'images/striped-bass.png';
+
+class Enemy{
+    constructor(){
+        this.x = 0 - 50 - Math.random() * canvas.width/2;
+        this.y = Math.random() * canvas.height;
+        
+        this.radius = 50;
+        this.speed = Math.random() * 5 + 1;
+        this.distance;
+        this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
+        this.counted = false;
+        this.frameX = 0;
+        this.spriteWidth = 100;
+        this.spriteHeight = 100;
+        this.pop = false;
+        this.counted = false;
+    }
+    draw(){
+          ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+      }
+    update(){
+        this.x -= this.speed;
+        if(this.x < 0 - this.radius * 2){
+            this.x = canvas.width + 200;
+            this.y = Math.random() * (canvas.height -150) + 90;
+            this.speed = Math.random() * 2 +2;
+        }
+        if (gameFrame % 5 == 0){
+            this.frame++;
+            if(this.frame >= 12) this.frame = 0;
+            if(this.frame == 3 || this.frame == 7 || this.frame || 11){
+                this.frameX = 0;
+            } else{
+                this.frameX++;
+            }
+            if(this.frame<3) this.frameY = 0;
+            else if (this.frame < 7) this.frameY = 1;
+            else if (this.frame < 11) this.frameY = 2;
+            else this.frameY = 0;
+        }
+        // collision with player
+        const dx = this.x - player.x;
+        const dy = this.y - player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if(distance < this.radius + player.radius) {
+            handleGameOver();
+        }
+    }
+}
+const enemy1 = new Enemy();
+function handleEnemies(){
+    enemy1.update();
+    enemy1.draw();
+}
+function handleGameOver(){
+    ctx.fillStyle = 'white';
+    ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
+    gameOver = ture;
+}
+
+/**** bubble TEXT ***/ 
 let bubbleTextArray = [];
 let adjustX = -3;
 let adjustY = -3;
@@ -169,7 +288,7 @@ ctx.fillText('Deep Sea', 45, 40);
 //ctx.fillText('TEXT', 36, 49);
 const textCoordinates = ctx.getImageData(0, 0, 140, 100);
 
-class Particle2 {
+class Particle {
     constructor(x, y){
         this.x = x;
         this.y = y;
@@ -240,91 +359,22 @@ class Particle2 {
     }
 }
 
-function init2() {
+function init() {
     bubbleTextArray = [];
     for (let y = 0, y2 = textCoordinates.height; y < y2; y++){
         for (let x = 0, x2 = textCoordinates.width; x < x2; x++){
             if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128){
                 let positionX = x + adjustX;
                 let positionY = y + adjustY;
-                bubbleTextArray.push(new Particle2(positionX * 8, positionY * 8));
+                bubbleTextArray.push(new Particle(positionX * 8, positionY * 8));
             }
         }
     }
 }
-init2();
+init();
 console.log(bubbleTextArray);
 /** bubble text end **/
 
-// New Enemies
-const enemyImage = new Image();
-enemyImage.src = 'images/striped-bass.png';
-
-class Enemy{
-    constructor(){
-        this.x = 0 - 50 - Math.random() * canvas.width/2;
-        this.y = Math.random() * canvas.height;
-        
-        this.radius = 50;
-        this.speed = Math.random() * 5 + 1;
-        this.distance;
-        this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
-        this.counted = false;
-        this.frameX = 0;
-        this.spriteWidth = 100;
-        this.spriteHeight = 100;
-        this.pop = false;
-        this.counted = false;
-    }
-    draw(){
-        /*
-          ctx.fillStyle = 'blue';
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-          */
-          ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
-      }
-    update(){
-        this.x -= this.speed;
-        if(this.x < 0 - this.radius * 2){
-            this.x = canvas.width + 200;
-            this.y = Math.random() * (canvas.height -150) + 90;
-            this.speed = Math.random() * 2 +2;
-        }
-        if (gameFrame % 5 == 0){
-            this.frame++;
-            if(this.frame >= 12) this.frame = 0;
-            if(this.frame == 3 || this.frame == 7 || this.frame || 11){
-                this.frameX = 0;
-            } else{
-                this.frameX++;
-            }
-            if(this.frame<3) this.frameY = 0;
-            else if (this.frame < 7) this.frameY = 1;
-            else if (this.frame < 11) this.frameY = 2;
-            else this.frameY = 0;
-        }
-        // collision with player
-        const dx = this.x - player.x;
-        const dy = this.y - player.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if(distance < this.radius + player.radius) {
-            handleGameOver();
-        }
-    }
-}
-const enemy1 = new Enemy();
-function handleEnemies(){
-    enemy1.update();
-    enemy1.draw();
-}
-function handleGameOver(){
-    ctx.fillStyle = 'white';
-    ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
-    gameOver = ture;
-}
 // animation loop
 function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -332,7 +382,8 @@ function animate(){
         bubbleTextArray[i].draw();
         bubbleTextArray[i].update();
     }
-    handleBubbles();
+    handleFish1();
+    handleFish2();
     handleEnemies();
     player.update();
     player.draw();
