@@ -322,7 +322,7 @@ function handleEnemies(){
 }
 function handleGameOver(){
     ctx.fillStyle = 'white';
-    ctx.fillText('Game Over, you reached score ' + score, 130, 250);
+    ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
     gameOver = ture;
 }
 // animation loop
