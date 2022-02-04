@@ -1,3 +1,7 @@
+function play() {
+    var audio = new Audio('sound/bensound-slowmotion.mp3');
+    audio.play();
+}
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 1255;
@@ -6,10 +10,11 @@ let score = 0;
 let gameFrame = 0;
 ctx.font = '50px Georgia';
 let gameOver = false;
-
+var myMusic;
+var randomN;
+//bgm
 
 // Mouse interactivity
-
 
 let canvasPosition = canvas.getBoundingClientRect();
 const mouse = {
@@ -26,12 +31,22 @@ window.addEventListener('mouseup', function(e){
     mouse.click = false;
 });
 
+const bubblePop1 = document. createElement('audio');
+bubblePop1.src = 'audio/sound1.wav';
+const bubblePop2 = document. createElement('audio');
+bubblePop2.src = 'audio/sound2.wav';
+const gameover1 = document. createElement('audio');
+gameover1.src = 'audio/sound3.mp3';
 
 // Player
 const playerLeft = new Image();
-playerLeft.src = 'images/atlantic-salmon-Left.png';
+playerLeft.src = 'images/green-sea-turtle-Left.png';
 const playerRight = new Image();
-playerRight.src = 'images/atlantic-salmon-Right.png';
+playerRight.src = 'images/green-sea-turtle-Right.png';
+const playerLeft2 = new Image();
+const playerRight2 = new Image();
+playerLeft2.src = 'images/atlantic-salmon-Left.png';
+playerRight2.src = 'images/atlantic-salmon-Left.png';
 
 class Player {
     constructor(){
@@ -61,6 +76,7 @@ class Player {
         if (this.y > canvas.height) this.y = canvas.height;
         let theta = Math.atan2(dy,dx);
         this.angle = theta;
+        
     }
     draw(){
         if (mouse.click){
@@ -84,14 +100,27 @@ class Player {
             ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
         }
         ctx.restore();
+        
+
     }
 }
 const player = new Player();
 
+//random 
+function randomNumber() {
+
+    var randNum = Math.random();
+
+    return randNum;
+
+}
 // Fish1
 const fishArray1 = [];
 const fish1 = new Image();
 fish1.src = 'images/clown-fish.png';
+const fishArray2 = [];
+const fish2 = new Image();
+fish2.src = 'images/blue-tang.png';
 class Fish1 {
     constructor(){
         this.x = 0 - 50 - Math.random() * canvas.width/2;
@@ -115,16 +144,10 @@ class Fish1 {
         this.distance = Math.sqrt(dx * dx + dy * dy);
     }
     draw(){
-        ctx.drawImage(fish1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+            ctx.drawImage(fish1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+          
     }
 }
-
-const bubblePop1 = document. createElement('audio');
-bubblePop1.src = 'audio/sound1.wav';
-const bubblePop2 = document. createElement('audio');
-bubblePop2.src = 'audio/sound2.wav';
-const gameover1 = document. createElement('audio');
-gameover1.src = 'audio/sound3.mp3';
 
 function handleFish1(){
     for (let i = 0; i < fishArray1.length; i++){
@@ -163,10 +186,8 @@ function popAndRemove1(i){
 
 }
 
+
 // Fish 2
-const fishArray2 = [];
-const fish2 = new Image();
-fish2.src = 'images/blue-tang.png';
 class Fish2 {
     constructor(){
         this.x = 0 - 50 - Math.random() * canvas.width/2;
@@ -228,16 +249,14 @@ function popAndRemove2(i){
         if (fishArray2[i].pop) fishArray2.splice(i, 1);
         requestAnimationFrame(popAndRemove2);
     }
-
 }
 
-// Enemies
-const enemy1 = new Image();
-enemy1.src = 'images/bag.png';
-
-class Enemy1{
+const fishArray3 = [];
+const fish3 = new Image();
+fish3.src = 'images/atlantic-salmon-Left.png';
+class Fish3 {
     constructor(){
-        this.x = 0 - 50 - Math.random() * canvas.width/2;
+        this.x = canvas.width;
         this.y = Math.random() * canvas.height;
         
         this.radius = 50;
@@ -251,9 +270,78 @@ class Enemy1{
         this.pop = false;
         this.counted = false;
     }
+    update(){
+        this.x -= this.speed
+        const dy = this.y - player.y;
+        const dx = this.x - player.x;
+        this.distance = Math.sqrt(dx * dx + dy * dy);
+    }
     draw(){
-          ctx.drawImage(enemy1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
-      }
+            ctx.drawImage(fish3, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+          
+    }
+}
+
+function handleFish3(){
+    for (let i = 0; i < fishArray3.length; i++){
+        if (fishArray3[i].y > canvas.height * 2){
+            fishArray3.splice(i, 1);
+        }
+    }
+    for (let i = 0; i < fishArray3.length; i++){
+        if (fishArray3[i].distance < fishArray3[i].radius + player.radius){
+            popAndRemove3(i);
+        }
+    }
+    for (let i = 0; i < fishArray3.length; i++){
+        fishArray3[i].update();
+        fishArray3[i].draw();
+    }
+    if (gameFrame % 100 == 0) {
+        fishArray3.push(new Fish3());
+
+    }
+}
+function popAndRemove3(i){
+    if (fishArray3[i]) {
+        if (!fishArray3[i].counted) score++;
+        if (fishArray3[i].sound == 'sound1'){
+            bubblePop1.play();
+        } else {
+            bubblePop2.play();
+        }
+        fishArray3[i].counted = true;
+        fishArray3[i].frameX++;
+        if (fishArray3[i].frameX > 7) fishArray3[i].pop = true;
+        if (fishArray3[i].pop) fishArray3.splice(i, 1);
+        requestAnimationFrame(popAndRemove3);
+    }
+
+}
+// Enemies
+const enemyArray = [];
+const enemyImage = new Image();
+enemyImage.src = 'images/striped-bass.png';
+
+class Enemy{
+    constructor(){
+        this.x = 0 - 50 - Math.random() * canvas.width/2;
+        this.y = Math.random() * canvas.height;
+        
+        this.radius = 35;
+        this.speed = Math.random() * 5 + 1;
+        this.distance;
+        this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
+        this.counted = false;
+        this.frameX = 0;
+        this.spriteWidth = 100;
+        this.spriteHeight = 100;
+        this.pop = false;
+        this.counted = false;
+    }
+    draw(){
+        ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+    }
     update(){
         this.x -= this.speed;
         if(this.x < 0 - this.radius * 2){
@@ -283,17 +371,30 @@ class Enemy1{
         }
     }
 }
-const enemy01= new Enemy1();
-function handleEnemy1(){
-    enemy01.update();
-    enemy01.draw();
+
+function handleEnemies(){
+    for (let i = 0; i < enemyArray.length; i++){
+        if (enemyArray[i].y > canvas.height * 2){
+            enemyArray.splice(i, 1);
+        }
+    }
+    for (let i = 0; i < enemyArray.length; i++){
+        enemyArray[i].update();
+        enemyArray[i].draw();
+    }
+    if (gameFrame % 400 == 0) {
+        enemyArray.push(new Enemy());
+
+    }
+    
 }
+
+
 function handleGameOver(){
     gameover1.play();
     ctx.fillStyle = 'white';
     ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
     gameOver = ture;
-    
 }
 
 /**** bubble TEXT ***/ 
@@ -303,8 +404,6 @@ let adjustY = -3;
 ctx.fillStyle = 'white';
 ctx.font = '17px Verdana';
 ctx.fillText('Deep Sea', 45, 40);
-ctx.font = '11px Verdana';
-ctx.fillText('Click for Sound', 45, 60);
 //ctx.font = '19px Verdana';
 //ctx.fillText('TEXT', 36, 49);
 const textCoordinates = ctx.getImageData(0, 0, 140, 100);
@@ -393,8 +492,16 @@ function init() {
     }
 }
 init();
+
+
 console.log(bubbleTextArray);
 /** bubble text end **/
+function play() {
+    myMusic = new sound("sound/bensound-slowmotion.mp3"); 
+    myMusic.play();
+    myMusic.pause();
+}
+
 
 // animation loop
 function animate(){
@@ -405,7 +512,8 @@ function animate(){
     }
     handleFish1();
     handleFish2();
-    handleEnemy1();
+    handleFish3();
+    handleEnemies();
     player.update();
     player.draw();
     ctx.fillStyle = 'rgba(34,147,214,1)';
