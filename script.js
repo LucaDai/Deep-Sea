@@ -321,7 +321,7 @@ function popAndRemove3(i){
 // Enemies
 const enemyArray = [];
 const enemyImage = new Image();
-enemyImage.src = 'images/striped-bass.png';
+enemyImage.src = 'images/bag.png';
 
 class Enemy{
     constructor(){
@@ -404,6 +404,8 @@ let adjustY = -3;
 ctx.fillStyle = 'white';
 ctx.font = '17px Verdana';
 ctx.fillText('Deep Sea', 45, 40);
+ctx.font = '11px Verdana';
+ctx.fillText('Click for Sound', 45, 60);
 //ctx.font = '19px Verdana';
 //ctx.fillText('TEXT', 36, 49);
 const textCoordinates = ctx.getImageData(0, 0, 140, 100);
