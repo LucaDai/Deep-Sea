@@ -119,6 +119,13 @@ class Fish1 {
     }
 }
 
+const bubblePop1 = document. createElement('audio');
+bubblePop1.src = 'audio/sound1.wav';
+const bubblePop2 = document. createElement('audio');
+bubblePop2.src = 'audio/sound2.wav';
+const gameover1 = document. createElement('audio');
+gameover1.src = 'audio/sound3.mp3';
+
 function handleFish1(){
     for (let i = 0; i < fishArray1.length; i++){
         if (fishArray1[i].y > canvas.height * 2){
@@ -142,6 +149,11 @@ function handleFish1(){
 function popAndRemove1(i){
     if (fishArray1[i]) {
         if (!fishArray1[i].counted) score++;
+        if (fishArray1[i].sound == 'sound1'){
+            bubblePop1.play();
+        } else {
+            bubblePop2.play();
+        }
         fishArray1[i].counted = true;
         fishArray1[i].frameX++;
         if (fishArray1[i].frameX > 7) fishArray1[i].pop = true;
@@ -205,6 +217,11 @@ function handleFish2(){
 function popAndRemove2(i){
     if (fishArray2[i]) {
         if (!fishArray2[i].counted) score++;
+        if (fishArray2[i].sound == 'sound1'){
+            bubblePop1.play();
+        } else {
+            bubblePop2.play();
+        }
         fishArray2[i].counted = true;
         fishArray2[i].frameX++;
         if (fishArray2[i].frameX > 7) fishArray2[i].pop = true;
@@ -215,10 +232,10 @@ function popAndRemove2(i){
 }
 
 // Enemies
-const enemyImage = new Image();
-enemyImage.src = 'images/striped-bass.png';
+const enemy1 = new Image();
+enemy1.src = 'images/bag.png';
 
-class Enemy{
+class Enemy1{
     constructor(){
         this.x = 0 - 50 - Math.random() * canvas.width/2;
         this.y = Math.random() * canvas.height;
@@ -235,7 +252,7 @@ class Enemy{
         this.counted = false;
     }
     draw(){
-          ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
+          ctx.drawImage(enemy1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth*1.5, this.spriteHeight*1.5);
       }
     update(){
         this.x -= this.speed;
@@ -266,15 +283,17 @@ class Enemy{
         }
     }
 }
-const enemy1 = new Enemy();
-function handleEnemies(){
-    enemy1.update();
-    enemy1.draw();
+const enemy01= new Enemy1();
+function handleEnemy1(){
+    enemy01.update();
+    enemy01.draw();
 }
 function handleGameOver(){
+    gameover1.play();
     ctx.fillStyle = 'white';
     ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
     gameOver = ture;
+    
 }
 
 /**** bubble TEXT ***/ 
@@ -284,6 +303,8 @@ let adjustY = -3;
 ctx.fillStyle = 'white';
 ctx.font = '17px Verdana';
 ctx.fillText('Deep Sea', 45, 40);
+ctx.font = '11px Verdana';
+ctx.fillText('Click for Sound', 45, 60);
 //ctx.font = '19px Verdana';
 //ctx.fillText('TEXT', 36, 49);
 const textCoordinates = ctx.getImageData(0, 0, 140, 100);
@@ -384,7 +405,7 @@ function animate(){
     }
     handleFish1();
     handleFish2();
-    handleEnemies();
+    handleEnemy1();
     player.update();
     player.draw();
     ctx.fillStyle = 'rgba(34,147,214,1)';
