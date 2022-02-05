@@ -4,17 +4,22 @@
         <title>The Deep Sea</title>
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body onload=play()>
+        <container>
         
+            <canvas id="canvas1"></canvas>
+            <form action="gallery.html">
+                <input type="submit" value="Go to Gallery" />
+            </form>
+            <button onclick="play()">Play Audio</button>
+        </container>
     </body>
     
-    <container>
-        
-        <canvas id="canvas1"></canvas>
-    </container>
+   
     
         
     <script src = "script.js">
         
     </script>
+    
 </html>
