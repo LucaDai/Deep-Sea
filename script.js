@@ -1,7 +1,11 @@
 function play() {
-    var audio = new Audio('sound/bensound-slowmotion.mp3');
+    var audio = new Audio('audio/bensound-slowmotion.mp3');
     audio.play();
 }
+function myFunction() {
+    var x = document.getElementById("myAudio").autoplay;
+    document.getElementById("demo").innerHTML = x;
+  }
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 1255;
