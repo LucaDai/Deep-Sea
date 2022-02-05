@@ -17,8 +17,8 @@ h2.headertekst {
   text-align: left;
 }
 .container {
-    width: 800px;
-    height: 500px;
+    width: 80%;
+    height: 80%;
     
 }
 form {
@@ -35,11 +35,11 @@ form {
 }
 div.gallery {
   text-align: left;
-  margin: 5px;
+  margin: 1%;
   border: 1px solid #ccc;
   float: left;
-  width: 190px;
-  height: 600px;
+  width: 15%;
+  height: 80%;
 }
 
 div.gallery:hover {
@@ -52,6 +52,6 @@ div.gallery img {
 }
 
 div.desc {
-  padding: 15px;
+  padding: 15%;
   text-align: center;
 }
