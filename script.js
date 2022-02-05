@@ -37,17 +37,14 @@ const bubblePop2 = document. createElement('audio');
 bubblePop2.src = 'audio/sound2.wav';
 const gameover1 = document. createElement('audio');
 gameover1.src = 'audio/sound3.mp3';
+const backgroundMusic = document. createElement('audio');
+backgroundMusic.src = 'audio/sound/bensound-slowmotion.mp3';
 
 // Player
 const playerLeft = new Image();
 playerLeft.src = 'images/green-sea-turtle-Left.png';
 const playerRight = new Image();
 playerRight.src = 'images/green-sea-turtle-Right.png';
-const playerLeft2 = new Image();
-const playerRight2 = new Image();
-playerLeft2.src = 'images/atlantic-salmon-Left.png';
-playerRight2.src = 'images/atlantic-salmon-Left.png';
-
 class Player {
     constructor(){
         this.x = canvas.width;
@@ -106,14 +103,7 @@ class Player {
 }
 const player = new Player();
 
-//random 
-function randomNumber() {
 
-    var randNum = Math.random();
-
-    return randNum;
-
-}
 // Fish1
 const fishArray1 = [];
 const fish1 = new Image();
@@ -393,7 +383,8 @@ function handleEnemies(){
 function handleGameOver(){
     gameover1.play();
     ctx.fillStyle = 'white';
-    ctx.fillText('Game Over, you reached score ' + score, canvas.width / 2 - 150, 450);
+    ctx.font = '44px Verdana';
+    ctx.fillText('Game Over, you reached score ' + score, 300, 150);
     gameOver = ture;
 }
 
@@ -482,6 +473,7 @@ class Particle {
 }
 
 function init() {
+    backgroundMusic.play();
     bubbleTextArray = [];
     for (let y = 0, y2 = textCoordinates.height; y < y2; y++){
         for (let x = 0, x2 = textCoordinates.width; x < x2; x++){
@@ -498,11 +490,6 @@ init();
 
 console.log(bubbleTextArray);
 /** bubble text end **/
-function play() {
-    myMusic = new sound("sound/bensound-slowmotion.mp3"); 
-    myMusic.play();
-    myMusic.pause();
-}
 
 
 // animation loop
