@@ -243,7 +243,7 @@ function popAndRemove2(i){
 
 const fishArray3 = [];
 const fish3 = new Image();
-fish3.src = 'images/atlantic-salmon-Left.png';
+fish3.src = 'images/striped-bass.png';
 class Fish3 {
     constructor(){
         this.x = canvas.width;
